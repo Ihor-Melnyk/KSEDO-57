@@ -42,6 +42,9 @@ function setPropertyRequired(attributeName, boolValue = true) {
   EdocsApi.setControlProperties(attributeProps);
 }
 
+function onCardInitialize() {
+  onChangeProceedings();
+}
 function onChangeProceedings() {
   var Proceedings = EdocsApi.getAttributeValue("Proceedings").value;
   if (Proceedings) {
