@@ -29,6 +29,7 @@ function setProgramEducational() {
 }
 
 function setPropertyHidden(attributeName, boolValue = true) {
+  debugger;
   //приховане
   var attributeProps = EdocsApi.getControlProperties(attributeName);
   attributeProps.hidden = boolValue;
@@ -42,6 +43,21 @@ function setPropertyRequired(attributeName, boolValue = true) {
   EdocsApi.setControlProperties(attributeProps);
 }
 
+function clearAttribute(attributeCode, doNotClearOnInit, isDictionary) {
+  //очищення
+  if (doNotClearOnInit) {
+    return;
+  }
+  var attribute = EdocsApi.getAttributeValue(attributeCode);
+  attribute.value = null;
+  attribute.text = null;
+  if (isDictionary) {
+    attribute.itemCode = null;
+    attribute.itemDictionary = null;
+  }
+  EdocsApi.setAttributeValue(attribute);
+}
+
 function onCardInitialize() {
   onChangeProceedings();
 }
@@ -50,74 +66,58 @@ function onChangeProceedings() {
   if (Proceedings) {
     switch (Proceedings) {
       case "Студент":
-        //Студент
+        setPropertyHidden("Student", false);
         setPropertyHidden("Info", false);
-        setPropertyHidden("STD_NAME", false);
-        setPropertyHidden("STD_IDNUM", false);
-        setPropertyHidden("ProgramEducational", false);
-        setPropertyHidden("StdGroup", false);
-        setPropertyHidden("STD_LEVEL", false);
-        setPropertyHidden("StdDep", false);
-        setPropertyHidden("StdEmail", false);
-        setPropertyHidden("StdPhone", false);
 
         setPropertyRequired("STD_NAME");
         //Викладач
         setPropertyHidden("Teacher");
         setPropertyHidden("info2");
-        setPropertyHidden("TeacherName");
-        setPropertyHidden("TeacherPosition");
-        setPropertyHidden("TeacherDep");
 
         setPropertyRequired("TeacherName", false);
+
+        clearAttribute("Teacher");
+        clearAttribute("info2");
+        clearAttribute("TeacherDep");
+        clearAttribute("TeacherPosition");
+        clearAttribute("TeacherDep");
         break;
 
       case "Викладач":
+        debugger;
         //Студент
         setPropertyHidden("Info");
-        setPropertyHidden("STD_NAME");
-        setPropertyHidden("STD_IDNUM");
-        setPropertyHidden("ProgramEducational");
-        setPropertyHidden("StdGroup");
-        setPropertyHidden("STD_LEVEL");
-        setPropertyHidden("StdDep");
-        setPropertyHidden("StdEmail");
-        setPropertyHidden("StdPhone");
+        setPropertyHidden("Student");
 
         setPropertyRequired("STD_NAME", false);
+
+        clearAttribute("Info");
+        clearAttribute("STD_NAME");
+        clearAttribute("STD_IDNUM");
+        clearAttribute("ProgramEducational");
+        clearAttribute("StdGroup");
+        clearAttribute("STD_LEVEL");
+        clearAttribute("StdDep");
+        clearAttribute("StdEmail");
+        clearAttribute("StdPhone");
+        clearAttribute("Student");
         //Викладач
         setPropertyHidden("Teacher", false);
         setPropertyHidden("info2", false);
-        setPropertyHidden("TeacherName", false);
-        setPropertyHidden("TeacherPosition", false);
-        setPropertyHidden("TeacherDep", false);
 
         setPropertyRequired("TeacherName");
         break;
 
       default:
-        //Студент
-        setPropertyHidden("Info");
-        setPropertyHidden("STD_NAME");
-        setPropertyHidden("STD_IDNUM");
-        setPropertyHidden("ProgramEducational");
-        setPropertyHidden("StdGroup");
-        setPropertyHidden("STD_LEVEL");
-        setPropertyHidden("StdDep");
-        setPropertyHidden("StdEmail");
-        setPropertyHidden("StdPhone");
-
-        setPropertyRequired("STD_NAME", false);
-        //Викладач
-        setPropertyHidden("Teacher");
-        setPropertyHidden("info2");
-        setPropertyHidden("TeacherName");
-        setPropertyHidden("TeacherPosition");
-        setPropertyHidden("TeacherDep");
-
-        setPropertyRequired("TeacherName", false);
         break;
     }
+  } else {
+    //Студент
+    setPropertyHidden("Student");
+    setPropertyHidden("Info");
+    //Викладач
+    setPropertyHidden("Teacher");
+    setPropertyHidden("info2");
   }
 }
 function onChangeStudent() {
